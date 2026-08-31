@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from './Logo';
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<{ homeHref?: string }> = ({ homeHref = '' }) => {
   return (
     <footer className="bg-[#090D10] text-[#F4F1EB] pt-20 pb-12 border-t border-[#E6E0D6]/10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
           
           {/* Column 1: Logo & Slogan */}
           <div className="flex flex-col items-start space-y-4">
-            <Logo variant="cream" />
+            <Logo variant="cream" href={`${homeHref}#hero`} />
             <p className="text-[13px] text-[#6B6F76] font-normal tracking-wide pl-0.5 pt-2">
               Espacios que construyen futuro.
             </p>
@@ -23,17 +23,17 @@ export const Footer: React.FC = () => {
             </span>
             <ul className="space-y-3 text-[13px] tracking-[0.15em] font-normal text-[#F4F1EB]/80 uppercase">
               <li>
-                <a href="#hero" className="hover:text-[#E6E0D6] transition-colors">
+                <a href={`${homeHref}#hero`} className="hover:text-[#E6E0D6] transition-colors">
                   Inicio
                 </a>
               </li>
               <li>
-                <a href="#propiedades" className="hover:text-[#E6E0D6] transition-colors">
+                <a href={`${homeHref}#propiedades`} className="hover:text-[#E6E0D6] transition-colors">
                   Propiedades
                 </a>
               </li>
               <li>
-                <a href="#nosotros" className="hover:text-[#E6E0D6] transition-colors">
+                <a href={`${homeHref}#nosotros`} className="hover:text-[#E6E0D6] transition-colors">
                   Nosotros
                 </a>
               </li>

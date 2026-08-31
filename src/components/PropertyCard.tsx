@@ -13,7 +13,17 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
 }) => {
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Ver ${property.title}`}
+      aria-haspopup="dialog"
       onClick={() => onSelectProperty && onSelectProperty(property)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelectProperty?.(property);
+        }
+      }}
       className="group cursor-pointer bg-[#1B1F26]/40 border border-[#E6E0D6]/15 hover:border-[#E6E0D6]/40 transition-all duration-500 overflow-hidden flex flex-col h-full rounded-sm"
     >
       {/* Image Container with subtle overflow zoom */}

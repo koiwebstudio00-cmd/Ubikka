@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { Property } from '../data/properties';
-import { X, MapPin, Bed, Bath, Maximize2, ArrowRight } from 'lucide-react';
+import { X, MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { PropertyFacts } from './PropertyFacts';
+import { lockPageScroll } from '../utils/scrollLock';
 
 interface PropertyDetailModalProps {
-  property: Property | null;
+  property: Property;
   onClose: () => void;
   onConsult: (property: Property) => void;
 }
@@ -13,15 +15,42 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
   onClose,
   onConsult,
 }) => {
-  if (!property) return null;
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useLayoutEffect(() => {
+    const dialog: HTMLDialogElement | null = dialogRef.current;
+    if (!dialog) return;
+
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    const unlockScroll = lockPageScroll();
+    dialog.showModal();
+
+    return () => {
+      dialog.close();
+      unlockScroll();
+      trigger?.focus({ preventScroll: true });
+    };
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#0E1216]/90 backdrop-blur-md animate-fadeIn">
+    <dialog
+      ref={dialogRef}
+      className="property-modal"
+      aria-labelledby="property-modal-title"
+      onCancel={(event) => { event.preventDefault(); onClose(); }}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') { event.preventDefault(); onClose(); }
+      }}
+      onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
+    >
       {/* Modal Container */}
-      <div className="relative bg-[#1B1F26] border border-[#E6E0D6]/20 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl text-[#F4F1EB] rounded-none">
+      <div className="property-modal-frame">
         
         {/* Close Button */}
         <button
+          type="button"
+          autoFocus
           onClick={onClose}
           className="absolute top-4 right-4 z-20 bg-[#0E1216]/80 text-[#E6E0D6] p-2 hover:bg-[#E6E0D6] hover:text-[#0E1216] transition-colors"
           aria-label="Cerrar modal"
@@ -29,6 +58,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
           <X size={20} />
         </button>
 
+        <div className="property-modal-panel bg-[#1B1F26] border border-[#E6E0D6]/20 shadow-2xl text-[#F4F1EB]">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Image side */}
           <div className="relative aspect-[4/3] md:aspect-auto h-full min-h-[300px] bg-[#0E1216]">
@@ -52,7 +82,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 <span>{property.location}</span>
               </div>
 
-              <h2 className="text-2xl md:text-3xl font-light text-[#F4F1EB] mb-2">
+              <h2 id="property-modal-title" className="text-2xl md:text-3xl font-light text-[#F4F1EB] mb-2">
                 {property.title}
               </h2>
 
@@ -64,26 +94,8 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 {property.description}
               </p>
 
-              {/* Specs Grid */}
-              <div className="grid grid-cols-3 gap-4 py-4 border-y border-[#E6E0D6]/10 mb-6">
-                {property.bedrooms && (
-                  <div className="flex flex-col items-center text-center p-2">
-                    <Bed size={18} className="text-[#E6E0D6] mb-1" />
-                    <span className="text-[12px] text-[#F4F1EB] font-medium">{property.bedrooms} Dorms</span>
-                  </div>
-                )}
-                {property.bathrooms && (
-                  <div className="flex flex-col items-center text-center p-2">
-                    <Bath size={18} className="text-[#E6E0D6] mb-1" />
-                    <span className="text-[12px] text-[#F4F1EB] font-medium">{property.bathrooms} Baños</span>
-                  </div>
-                )}
-                {property.areaM2 && (
-                  <div className="flex flex-col items-center text-center p-2">
-                    <Maximize2 size={18} className="text-[#E6E0D6] mb-1" />
-                    <span className="text-[12px] text-[#F4F1EB] font-medium">{property.areaM2} m²</span>
-                  </div>
-                )}
+              <div className="mb-6">
+                <PropertyFacts property={property} />
               </div>
 
               {/* Price */}
@@ -98,19 +110,18 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
             </div>
 
             {/* Action CTA */}
-            <button
-              onClick={() => {
-                onConsult(property);
-                onClose();
-              }}
-              className="w-full bg-[#E6E0D6] text-[#0E1216] font-medium text-[12px] tracking-[0.2em] uppercase py-3.5 px-6 hover:bg-white transition-colors flex items-center justify-center gap-2 group"
-            >
-              <span>CONSULTAR POR ESTA PROPIEDAD</span>
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-            </button>
+            <div className="space-y-3">
+              <a href={`/propiedades/${property.slug}`} className="property-action property-action-primary">
+                Ver ficha completa <ArrowUpRight size={17} aria-hidden="true" />
+              </a>
+              <button type="button" onClick={() => onConsult(property)} className="property-action property-action-secondary">
+                Consultar por esta propiedad <ArrowRight size={17} aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </dialog>
   );
 };

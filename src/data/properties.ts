@@ -92,5 +92,5 @@ export const PROPERTIES: Property[] = [
 ];
 
 export const HERO_BACKGROUND_IMAGE = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=90";
-export const ABOUT_IMAGE = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1600&q=85"; // Luxurious interior architecture
-export const CTA_BACKGROUND_IMAGE = "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=90"; // Contemporary living room at sunset
+export const ABOUT_IMAGE = "/images/nosotros-portrait.png";
+export const CTA_BACKGROUND_IMAGE = "/images/cta-background.png";

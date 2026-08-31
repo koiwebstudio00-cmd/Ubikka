@@ -18,7 +18,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({
   });
 
   return (
-    <section id="propiedades" className="py-24 md:py-36 bg-[#0E1216] border-t border-[#E6E0D6]/05">
+    <section id="propiedades" aria-labelledby="properties-title" className="py-24 md:py-36 bg-[#0E1216] border-t border-[#E6E0D6]/05">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -26,7 +26,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({
             <span className="text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium text-[#E6E0D6]/80 block mb-3">
               PROPIEDADES
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-[#F4F1EB] tracking-tight">
+            <h2 id="properties-title" className="text-3xl md:text-4xl lg:text-5xl font-light text-[#F4F1EB] tracking-tight">
               Propiedades destacadas
             </h2>
             <p className="text-[14px] md:text-[15px] font-normal text-[#6B6F76] mt-3 max-w-xl">
