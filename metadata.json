@@ -1,0 +1,6 @@
+{
+  "name": "UBIKKA Inmobiliaria",
+  "description": "Landing page boutique de UBIKKA Inmobiliaria - Espacios que inspiran una nueva forma de vivir.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
