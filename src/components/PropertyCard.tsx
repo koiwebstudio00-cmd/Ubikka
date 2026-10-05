@@ -1,3 +1,5 @@
+import { loadResource } from '../lib/resource';
+import { SiteLink } from './SiteLink';
 import React from 'react';
 import { Property } from '../data/properties';
 import { ArrowUpRight, MapPin } from 'lucide-react';
@@ -12,25 +14,18 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   onSelectProperty,
 }) => {
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <SiteLink
+      href={`/propiedades/${encodeURIComponent(property.slug)}`}
       aria-label={`Ver ${property.title}`}
-      aria-haspopup="dialog"
-      onClick={() => onSelectProperty && onSelectProperty(property)}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          onSelectProperty?.(property);
-        }
-      }}
+      onMouseEnter={() => { void loadResource(`/api/properties?id=${encodeURIComponent(property.slug)}`).catch(() => {}); }}
+      onFocus={() => { void loadResource(`/api/properties?id=${encodeURIComponent(property.slug)}`).catch(() => {}); }}
       className="group cursor-pointer bg-[#1B1F26]/40 border border-[#E6E0D6]/15 hover:border-[#E6E0D6]/40 transition-all duration-500 overflow-hidden flex flex-col h-full rounded-sm"
     >
       {/* Image Container with subtle overflow zoom */}
       <div className="relative aspect-[16/10] overflow-hidden bg-[#090D10]">
         <img
           src={property.image}
-          alt={property.title}
+          alt={`${property.type} en ${property.location || 'Tucumán'}: ${property.title}`}
           className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           loading="lazy"
         />
@@ -51,7 +46,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       </div>
 
       {/* Card Content */}
-      <div className="p-6 md:p-8 flex flex-col justify-between flex-grow">
+      <div className="p-5 xl:p-6 flex flex-col justify-between flex-grow">
         <div>
           {/* Location */}
           <div className="flex items-center gap-1.5 text-[#6B6F76] text-[12px] tracking-wide mb-2">
@@ -60,7 +55,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           </div>
 
           {/* Title */}
-          <h3 className="text-xl md:text-2xl font-light text-[#F4F1EB] group-hover:text-[#E6E0D6] transition-colors duration-300 mb-3">
+          <h3 className="text-xl font-light text-[#F4F1EB] group-hover:text-[#E6E0D6] transition-colors duration-300 mb-3">
             {property.title}
           </h3>
 
@@ -72,7 +67,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
 
         {/* Price & Action */}
-        <div className="pt-4 border-t border-[#E6E0D6]/10 flex items-center justify-between mt-auto">
+        <div className="pt-4 border-t border-[#E6E0D6]/10 flex flex-wrap gap-3 items-center justify-between mt-auto">
           <div>
             <span className="text-[10px] tracking-[0.2em] uppercase text-[#6B6F76] block mb-0.5">Precio</span>
             <span className="text-lg md:text-xl font-medium text-[#E6E0D6]">
@@ -86,6 +81,6 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </SiteLink>
   );
 };

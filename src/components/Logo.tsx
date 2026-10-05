@@ -1,3 +1,4 @@
+import { SiteLink } from './SiteLink';
 import React from 'react';
 
 interface LogoProps {
@@ -30,7 +31,7 @@ export const Logo: React.FC<LogoProps> = ({
     '#E6E0D6';
 
   return (
-    <a href={href} aria-label="UBIKKA — Inicio" className={`inline-flex items-center gap-3.5 group select-none ${colorClass} ${className}`}>
+    <SiteLink href={href} aria-label="UBIKKA — Inicio" className={`inline-flex items-center gap-3.5 group select-none ${colorClass} ${className}`}>
       {/* Isotipo: 3 Architectural Vertical Pillars */}
       <svg 
         width="38" 
@@ -70,6 +71,6 @@ export const Logo: React.FC<LogoProps> = ({
           </span>
         </div>
       )}
-    </a>
+    </SiteLink>
   );
 };

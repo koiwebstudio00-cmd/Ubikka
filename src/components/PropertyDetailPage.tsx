@@ -1,75 +1,68 @@
-import React, { useEffect, useRef } from 'react';
-import { ArrowLeft, ArrowRight, MapPin } from 'lucide-react';
-import { Property } from '../data/properties';
+import { propertyMetadata } from '../../shared/public-content';
+import { usePageSeo } from '../lib/page-seo';
+import { PropertyGallery } from './PropertyGallery';
+import { SiteLink } from './SiteLink';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, MapPin, ExternalLink, House, BedDouble, Bath, Ruler, Maximize, Grid2X2, KeyRound, CheckCircle, CalendarDays, TrendingUp, Percent, Wallet, PawPrint, Sofa } from 'lucide-react';
+import type { Listing } from '../lib/catalog';
+import { priceLabel } from '../lib/catalog';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { Contact } from './Contact';
-import { PropertyFacts } from './PropertyFacts';
+import { PropertyInquiry } from './PropertyInquiry';
 
-export function PropertyDetailPage({ property }: { property?: Property }) {
+const labels: Record<string, string> = { vivienda: 'Vivienda', comercial: 'Comercial', profesional: 'Profesional', otro: 'Otro', meses_12: '12 meses', meses_18: '18 meses', meses_24: '24 meses', meses_36: '36 meses', trimestral: 'Trimestral', cuatrimestral: 'Cuatrimestral', icl: 'ICL', ipc: 'IPC', fijo: 'Fijo', se_permiten: 'Se permiten', no_se_permiten: 'No se permiten', sin_especificar: 'Sin especificar', amoblado: 'Amoblado', sin_amoblar: 'Sin amoblar' };
+const label = (value: unknown) => value == null || value === '' ? undefined : labels[String(value)] || String(value);
+const factIcons: Record<string, typeof House> = { Tipo: House, Operación: KeyRound, Estado: CheckCircle, Ambientes: Grid2X2, Dormitorios: BedDouble, Baños: Bath, 'Superficie cubierta': Ruler, 'Superficie total': Maximize, Dirección: MapPin, Zona: MapPin, Ciudad: MapPin, Destino: House, 'Plazo de contrato': CalendarDays, Ajuste: TrendingUp, 'Índice de ajuste': Percent, Expensas: Wallet, Mascotas: PawPrint, Amoblado: Sofa };
+function Facts({ rows }: { rows: [string, unknown][] }) {
+  const available = rows.filter(([, value]) => value !== undefined && value !== null && value !== '');
+  return <dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-7">{available.map(([key, value]) => { const Icon = factIcons[key] || House; return <div key={key} className="flex gap-3 items-start"><span className="p-2.5 rounded-xl bg-[#E6E0D6]/5 text-[#E6E0D6]/80"><Icon size={18} strokeWidth={1.5} aria-hidden="true" /></span><div><dt className="text-xs text-[#F4F1EB]/55 mb-2">{key}</dt><dd className="text-sm text-[#E6E0D6] break-words">{String(value)}</dd></div></div>; })}</dl>;
+}
+function safeMapLink(value: unknown) {
+  try { const url = new URL(String(value)); return ['http:', 'https:'].includes(url.protocol) ? url.href : undefined; } catch { return undefined; }
+}
+export function PropertyDetailPage({ property, phone }: { property?: Listing; phone?: string }) {
+  const seo = propertyMetadata(property?.details || {});
+  usePageSeo(seo.title, seo.description, property ? { '@type':'RealEstateListing', name: property.title, image:property.image, description:seo.description } : undefined, !property);
   const navbarRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
-    const previousTitle = document.title;
-    document.title = property ? `${property.title} · ${property.operation === 'VENTA' ? 'Venta' : 'Alquiler'} | UBIKKA` : 'Propiedad no encontrada | UBIKKA';
-    return () => { document.title = previousTitle; };
+    if (window.location.hash === '#contacto') document.getElementById('contacto')?.scrollIntoView();
   }, [property]);
+  const d = property?.details || {};
+  const rental = property?.operation.includes('ALQUILER');
+  const lat = d.lat == null ? NaN : Number(d.lat), lng = d.lng == null ? NaN : Number(d.lng);
+  const coordinates = Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180;
+  const maps = safeMapLink(d.linkMaps) || (coordinates ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` : undefined);
+  const photos = property?.photos.length ? property.photos : [{ id: 'placeholder', url: '/images/property-placeholder.svg' }];
+  const rentPrice = property?.operation === 'VENTA / ALQUILER' ? property.rentPrice : property?.price;
+  const rentCurrency = property?.operation === 'VENTA / ALQUILER' ? property.rentCurrency || property.currency : property?.currency;
+  return <><Navbar headerRef={navbarRef} logoVisible solid homeHref="/" /><main className="mx-auto max-w-[1440px] px-6 md:px-12 lg:px-16 pt-28 md:pt-36 pb-20">
+    <SiteLink href="/propiedades" className="inline-flex items-center gap-3 text-xs text-[#E6E0D6]/70"><ArrowLeft size={16} /> Volver a propiedades</SiteLink>
+    {!property ? <section className="py-24"><h1 className="text-4xl font-light mb-5">Esta propiedad no está disponible.</h1><p className="text-[#E6E0D6]/60">Visitá nuestro catálogo para conocer otras opciones.</p></section> : <>
+      <header className="mt-10 mb-10"><p className="text-xs tracking-[0.22em] uppercase text-[#E6E0D6]/65 mb-4">{property.type} · {property.operation}</p><h1 className="text-4xl md:text-5xl font-light tracking-tight">{property.title}</h1><div className="mt-5 text-sm text-[#E6E0D6]/70">
+        {maps ? <SiteLink href={maps} target="_blank" rel="noopener noreferrer" title="Abrir ubicación en Google Maps (nueva pestaña)" className="inline-flex items-center gap-2 hover:text-[#F4F1EB] underline underline-offset-4 decoration-[#E6E0D6]/30 focus-visible:outline-2 focus-visible:outline-offset-4 rounded-sm">
+          <MapPin size={16} className="shrink-0" aria-hidden="true" /><span>{[d.direccion, property.location].filter(Boolean).join(' · ') || 'Ver ubicación en Google Maps'}</span><ExternalLink size={14} className="shrink-0" aria-hidden="true" />
+        </SiteLink> : <p className="flex items-center gap-2"><MapPin size={16} className="shrink-0" aria-hidden="true" />{[d.direccion, property.location].filter(Boolean).join(' · ')}</p>}
+      </div></header>
+      <PropertyGallery photos={photos} title={property.title} />
+      <section className="flex flex-wrap gap-x-12 gap-y-4 py-7 border-b border-[#E6E0D6]/15">
+          {property.operation !== 'ALQUILER' && <div className=""><p className="text-xs text-[#E6E0D6]/60 mb-2 uppercase tracking-widest">Valor de venta</p><p className="text-3xl font-light">{priceLabel(property.price, property.currency)}</p></div>}
+          {rental && <div><p className="text-xs text-[#E6E0D6]/60 mb-2 uppercase tracking-widest">Alquiler mensual</p><p className="text-3xl font-light">{rentPrice == null ? 'Consultar' : priceLabel(rentPrice, rentCurrency || property.currency)}</p></div>}
+        </section>
+      <div className="grid mt-10 lg:grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_380px] gap-8 xl:gap-12 items-start">
+        <div className="min-w-0 space-y-8">
 
-  return (
-    <>
-      <Navbar headerRef={navbarRef} logoVisible solid homeHref="/" />
-      <main className="property-page">
-        <div className="mx-auto max-w-[1440px] px-6 md:px-12 lg:px-16 pt-28 md:pt-36 pb-16 md:pb-24">
-          <a href="/#propiedades" className="inline-flex items-center gap-3 text-[10px] sm:text-xs tracking-[0.18em] uppercase text-[#E6E0D6]/75 hover:text-white transition-colors">
-            <ArrowLeft size={16} aria-hidden="true" /> Volver a propiedades
-          </a>
-
-          {property ? (
-            <article className="property-page-enter mt-10 md:mt-14" aria-labelledby="property-title">
-              <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-10">
-                <div>
-                  <p className="text-[10px] tracking-[0.25em] uppercase text-[#E6E0D6]/65 mb-4">{property.type} · {property.operation}</p>
-                  <h1 id="property-title" className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-[-0.035em] leading-tight">{property.title}</h1>
-                  <p className="mt-5 flex items-center gap-2 text-sm text-[#E6E0D6]/70">
-                    <MapPin size={16} strokeWidth={1.5} aria-hidden="true" /> {property.location}
-                  </p>
-                </div>
-                <a href="#contacto" className="property-action property-action-secondary property-heading-action">
-                  Consultar <ArrowRight size={17} aria-hidden="true" />
-                </a>
-              </header>
-
-              <figure className="overflow-hidden bg-[#1B1F26] border border-[#E6E0D6]/10">
-                <img src={property.image} alt={property.title} fetchPriority="high" className="w-full aspect-[4/3] md:aspect-[21/10] object-cover" />
-              </figure>
-
-              <div className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-10 lg:gap-20 mt-10 md:mt-16 items-start">
-                <section aria-labelledby="property-description-title">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-[#E6E0D6]/60 mb-4">La propiedad</p>
-                  <h2 id="property-description-title" className="text-2xl md:text-3xl font-light mb-6">Un espacio para tu próxima etapa.</h2>
-                  {property.description && <p className="text-[#F4F1EB]/70 text-sm md:text-base leading-loose max-w-2xl mb-9">{property.description}</p>}
-                  <PropertyFacts property={property} />
-                </section>
-
-                <aside aria-label="Precio y consulta" className="bg-[#1B1F26]/60 border border-[#E6E0D6]/15 p-7 md:p-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#E6E0D6]/60 mb-3">{property.operation === 'VENTA' ? 'Valor de venta' : 'Alquiler mensual'}</p>
-                  <p className="text-2xl sm:text-3xl font-light text-[#E6E0D6] mb-6">{property.formattedPrice}</p>
-                  <p className="text-sm leading-relaxed text-[#F4F1EB]/65 mb-7">¿Te imaginás acá? Consultanos por esta propiedad y te acompañamos en el próximo paso.</p>
-                  <a href="#contacto" className="property-action property-action-primary">Consultar propiedad <ArrowRight size={17} aria-hidden="true" /></a>
-                </aside>
-              </div>
-            </article>
-          ) : (
-            <section className="py-24 max-w-2xl">
-              <p className="text-xs tracking-[0.25em] text-[#E6E0D6]/60 mb-5">404 · PROPIEDAD NO ENCONTRADA</p>
-              <h1 className="text-4xl md:text-5xl font-light leading-tight mb-6">Esta propiedad no está disponible.</h1>
-              <p className="text-[#E6E0D6]/70 leading-relaxed">Podés volver a las propiedades destacadas o escribirnos para que te ayudemos a encontrar lo que buscás.</p>
-            </section>
-          )}
+          {property.description && <section className="detail-panel"><h2 className="text-xl font-medium mb-6">Sobre esta propiedad</h2><p className="text-sm leading-loose text-[#F4F1EB]/75 whitespace-pre-line">{property.description}</p></section>}
+          <section className="detail-panel"><h2 className="text-xl font-medium mb-6">Características principales</h2><Facts rows={[
+            ['Tipo', property.type], ['Operación', property.operation], ['Estado', 'Disponible'], ['Ambientes', d.ambientes], ['Dormitorios', d.dormitorios], ['Baños', d.banios], ['Superficie cubierta', d.supCubierta == null ? undefined : `${d.supCubierta} m²`], ['Superficie total', d.supTotal == null ? undefined : `${d.supTotal} m²`], ['Dirección', d.direccion], ['Zona', d.zona], ['Ciudad', d.ciudad],
+          ]} /></section>
+          {rental && <section className="detail-panel"><h2 className="text-xl font-medium mb-6">Condiciones de alquiler</h2><Facts rows={[
+            ['Destino', label(d.destino)], ['Plazo de contrato', d.plazoContrato === 'otro' ? d.plazoOtro || 'Consultar' : label(d.plazoContrato)], ['Ajuste', d.ajuste === 'otro' ? d.ajusteOtro || 'Consultar' : label(d.ajuste)], ['Índice de ajuste', d.indiceAjuste === 'fijo' && d.indiceFijoPct != null ? `Fijo: ${d.indiceFijoPct}%` : label(d.indiceAjuste)], ['Expensas', d.expensas], ['Mascotas', label(d.mascotas)], ['Amoblado', label(d.amoblado)]
+          ]} /><p className="text-xs text-[#E6E0D6]/50 mt-6">Consultanos por las condiciones que no figuren detalladas.</p></section>}
+          {(maps || coordinates) && <section className="detail-panel"><h2 className="text-xl font-medium mb-6">Ubicación</h2>{coordinates && <iframe title={`Ubicación de ${property.title}`} loading="lazy" referrerPolicy="no-referrer" src={`https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`} className="w-full h-72 border-0 rounded-sm" />}{maps && <SiteLink href={maps} target="_blank" rel="noopener noreferrer" className="inline-flex gap-2 items-center text-sm text-[#E6E0D6] mt-5 underline">Abrir en Google Maps <ExternalLink size={16} /></SiteLink>}</section>}
+          <p className="text-xs text-[#E6E0D6]/45">Referencia: {property.id}{d.updatedAt && ` · Actualizada el ${new Date(d.updatedAt).toLocaleDateString('es-AR')}`}</p>
         </div>
-        <Contact selectedProperty={property} />
-      </main>
-      <Footer homeHref="/" />
-    </>
-  );
+        <aside className="space-y-6 lg:sticky lg:top-28"><PropertyInquiry property={property} phone={phone} /></aside>
+      </div>
+    </>}
+  </main><Footer homeHref="/" /></>;
 }

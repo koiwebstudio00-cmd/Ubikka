@@ -1,3 +1,4 @@
+import { SiteLink } from './SiteLink';
 import React, { useEffect, useRef } from 'react';
 import { ABOUT_IMAGE } from '../data/properties';
 import { ArrowRight } from 'lucide-react';
@@ -77,13 +78,13 @@ export const AboutUs: React.FC = () => {
 
             {/* Text-only CTA */}
             <div className="about-reveal mt-10 pt-4">
-              <a
+              <SiteLink
                 href="#contacto"
                 className="inline-flex items-center gap-3 text-[12px] tracking-[0.25em] uppercase font-medium text-[#E6E0D6] hover:text-white transition-colors duration-300 group py-2"
               >
                 <span>CONOCER UBIKKA</span>
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-2" />
-              </a>
+              </SiteLink>
             </div>
           </div>
 

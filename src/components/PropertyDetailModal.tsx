@@ -1,3 +1,4 @@
+import { SiteLink } from './SiteLink';
 import React, { useLayoutEffect, useRef } from 'react';
 import { Property } from '../data/properties';
 import { X, MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
@@ -111,9 +112,9 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
 
             {/* Action CTA */}
             <div className="space-y-3">
-              <a href={`/propiedades/${property.slug}`} className="property-action property-action-primary">
+              <SiteLink href={`/propiedades/${property.slug}`} className="property-action property-action-primary">
                 Ver ficha completa <ArrowUpRight size={17} aria-hidden="true" />
-              </a>
+              </SiteLink>
               <button type="button" onClick={() => onConsult(property)} className="property-action property-action-secondary">
                 Consultar por esta propiedad <ArrowRight size={17} aria-hidden="true" />
               </button>

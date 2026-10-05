@@ -1,3 +1,4 @@
+import { SiteLink } from './SiteLink';
 import React, { useState, useEffect, useRef } from 'react';
 import { Logo } from './Logo';
 import { Menu, X } from 'lucide-react';
@@ -12,7 +13,7 @@ interface NavbarProps {
 
 const navLinks = [
   { name: 'Inicio', href: '#hero' },
-  { name: 'Propiedades', href: '#propiedades' },
+  { name: 'Propiedades', href: '/propiedades' },
   { name: 'Nosotros', href: '#nosotros' },
   { name: 'Contacto', href: '#contacto' },
 ];
@@ -65,11 +66,11 @@ export const Navbar: React.FC<NavbarProps> = ({ headerRef, logoVisible, onContac
           <ul className="flex items-center gap-8 xl:gap-14 text-[12px] xl:text-[13px] tracking-[0.24em] font-normal text-[#F4F1EB]/90 uppercase">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href === '#contacto' ? link.href : `${homeHref}${link.href}`} className="navbar-link">{link.name}</a>
+                <SiteLink href={link.href.startsWith('/') ? link.href : `${homeHref}${link.href}`} className="navbar-link">{link.name}</SiteLink>
               </li>
             ))}
           </ul>
-          <a href="#contacto" onClick={handleContactClick} className="navbar-contact">Contactar</a>
+          <SiteLink href={`${homeHref}#contacto`} onClick={handleContactClick} className="navbar-contact">Contactar</SiteLink>
         </nav>
 
         <button
@@ -88,11 +89,11 @@ export const Navbar: React.FC<NavbarProps> = ({ headerRef, logoVisible, onContac
         <div className="navbar-dropdown-clip">
           <nav id="mobile-navigation" aria-label="Navegación móvil" className="navbar-mobile">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href === '#contacto' ? link.href : `${homeHref}${link.href}`} onClick={() => setMobileMenuOpen(false)} className="navbar-link py-3">
+              <SiteLink key={link.href} href={link.href.startsWith('/') ? link.href : `${homeHref}${link.href}`} onClick={() => setMobileMenuOpen(false)} className="navbar-link py-3">
                 {link.name}
-              </a>
+              </SiteLink>
             ))}
-            <a href="#contacto" onClick={handleContactClick} className="navbar-contact text-center mt-3">Contactar</a>
+            <SiteLink href={`${homeHref}#contacto`} onClick={handleContactClick} className="navbar-contact text-center mt-3">Contactar</SiteLink>
           </nav>
         </div>
       </div>

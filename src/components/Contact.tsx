@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { SiteLink } from './SiteLink';
+import React, { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MessageSquare, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useSite } from '../lib/site';
 import { Property } from '../data/properties';
 
 interface ContactProps {
@@ -15,6 +17,9 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
     mensaje: '',
   });
 
+  const site = useSite();
+  const inFlight = useRef(false);
+  const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -35,23 +40,37 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitting(true);
-
-    setTimeout(() => {
-      setSubmitting(false);
+    if (inFlight.current) return;
+    if (!formData.email.trim() && !formData.telefono.trim()) {
+      setError('Dejá al menos un dato de contacto: teléfono o email.'); return;
+    }
+    const website = new FormData(e.currentTarget).get('website');
+    inFlight.current = true; setSubmitting(true); setError(''); setSubmitted(false);
+    try {
+      const response = await fetch('/api/inquiries', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, website, mensaje: `Estoy buscando: ${formData.busqueda}.\n${formData.mensaje}`, ...(selectedProperty ? { property_id: selectedProperty.id } : {}) }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'No pudimos confirmar el envío.');
       setSubmitted(true);
-      // reset message after 6 seconds
-      setTimeout(() => setSubmitted(false), 6000);
-    }, 600);
+      setFormData({ nombre: '', email: '', telefono: '', busqueda: 'Comprar', mensaje: '' });
+    } catch (err) { setError(err instanceof Error ? err.message : 'No pudimos enviar la consulta.'); }
+    finally { inFlight.current = false; setSubmitting(false); }
   };
 
   return (
-    <section id="contacto" className="py-24 md:py-36 bg-[#0E1216] relative border-t border-[#E6E0D6]/10">
+    <section id="contacto" className="scroll-mt-20 py-24 md:py-36 bg-[#0E1216] relative border-t border-[#E6E0D6]/10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* 2 Columns Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+          {/* Left Column: Contact Info List */}
+          <div className="space-y-10">
         {/* Title */}
-        <div className="mb-16">
+        <div className="mb-12">
           <span className="text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium text-[#E6E0D6]/80 block mb-3">
             CONTACTO
           </span>
@@ -60,93 +79,32 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
           </h2>
         </div>
 
-        {/* 2 Columns Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column: Contact Info List */}
-          <div className="lg:col-span-5 space-y-10">
+
             <p className="text-[15px] text-[#F4F1EB]/70 font-normal leading-relaxed">
               Estamos a tu disposición para asesorarte con cercanía y confidencialidad en cada proyecto inmobiliario.
             </p>
 
-            <div className="space-y-6 pt-2">
-              {/* Phone */}
-              <div className="flex items-start gap-4 group">
-                <div className="p-2.5 rounded-none border border-[#E6E0D6]/15 text-[#E6E0D6] group-hover:border-[#E6E0D6]/40 transition-colors">
-                  <Phone size={18} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#6B6F76] block mb-0.5">
-                    Teléfono
-                  </span>
-                  <a href="tel:+543815550123" className="text-[15px] text-[#F4F1EB] hover:text-[#E6E0D6] transition-colors">
-                    +54 381 555 0123
-                  </a>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="flex items-start gap-4 group">
-                <div className="p-2.5 rounded-none border border-[#E6E0D6]/15 text-[#E6E0D6] group-hover:border-[#E6E0D6]/40 transition-colors">
-                  <Mail size={18} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#6B6F76] block mb-0.5">
-                    Email
-                  </span>
-                  <a href="mailto:hola@ubikka.com.ar" className="text-[15px] text-[#F4F1EB] hover:text-[#E6E0D6] transition-colors">
-                    hola@ubikka.com.ar
-                  </a>
-                </div>
-              </div>
-
-              {/* WhatsApp */}
-              <div className="flex items-start gap-4 group">
-                <div className="p-2.5 rounded-none border border-[#E6E0D6]/15 text-[#E6E0D6] group-hover:border-[#E6E0D6]/40 transition-colors">
-                  <MessageSquare size={18} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#6B6F76] block mb-0.5">
-                    WhatsApp
-                  </span>
-                  <a
-                    href="https://wa.me/543815550123"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[15px] text-[#F4F1EB] hover:text-[#E6E0D6] transition-colors"
-                  >
-                    +54 381 555 0123
-                  </a>
-                </div>
-              </div>
-
-              {/* Address */}
-              <div className="flex items-start gap-4 group">
-                <div className="p-2.5 rounded-none border border-[#E6E0D6]/15 text-[#E6E0D6] group-hover:border-[#E6E0D6]/40 transition-colors">
-                  <MapPin size={18} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#6B6F76] block mb-0.5">
-                    Dirección
-                  </span>
-                  <span className="text-[15px] text-[#F4F1EB]">
-                    San Miguel de Tucumán, Tucumán, Argentina
-                  </span>
-                </div>
-              </div>
+            <div className="space-y-6 pt-2 text-sm">
+              {site?.telefono && <p className="flex items-center gap-3"><Phone size={18} /><SiteLink href={`tel:${site.telefono.replace(/[^+0-9]/g, '')}`}>{site.telefono}</SiteLink></p>}
+              {site?.email && <p className="flex items-center gap-3"><Mail size={18} /><SiteLink href={`mailto:${site.email}`}>{site.email}</SiteLink></p>}
+              {site?.telefono && <p className="flex items-center gap-3"><MessageSquare size={18} /><SiteLink href={`https://wa.me/${site.telefono.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</SiteLink></p>}
+              {(site?.direccion || site?.ciudad) && <p className="flex items-center gap-3"><MapPin size={18} />{[site.direccion, site.ciudad].filter(Boolean).join(', ')}</p>}
             </div>
           </div>
 
           {/* Right Column: Minimalist Contact Form */}
-          <div className="lg:col-span-7 bg-[#1B1F26]/30 border border-[#E6E0D6]/15 p-8 md:p-10 relative">
+          <div className="bg-[#1B1F26]/30 border border-[#E6E0D6]/15 rounded-xl p-6 md:p-8 relative">
             {submitted && (
-              <div className="mb-6 p-4 border border-[#E6E0D6]/30 bg-[#1B1F26] text-[#E6E0D6] text-[13px] flex items-center gap-3 animate-fadeIn">
+              <div role="status" className="mb-6 p-4 border border-[#E6E0D6]/30 bg-[#1B1F26] text-[#E6E0D6] text-[13px] flex items-center gap-3 animate-fadeIn">
                 <CheckCircle2 size={18} className="shrink-0 text-[#E6E0D6]" />
                 <span>Gracias. Recibimos tu consulta y nos pondremos en contacto a la brevedad.</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" aria-busy={submitting}>
+              <div hidden aria-hidden="true"><label>Sitio web<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
+              <p className="text-sm text-[#F4F1EB]/70">Dejá tu teléfono o email para que podamos responderte.</p>
+              {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Nombre */}
                 <div>
@@ -156,7 +114,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                   <input
                     type="text"
                     id="nombre"
-                    name="nombre"
+                    name="nombre" maxLength={200} autoComplete="name"
                     required
                     value={formData.nombre}
                     onChange={handleChange}
@@ -173,8 +131,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                   <input
                     type="email"
                     id="email"
-                    name="email"
-                    required
+                    name="email" maxLength={254} autoComplete="email"
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="tu@email.com"
@@ -192,7 +149,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                   <input
                     type="tel"
                     id="telefono"
-                    name="telefono"
+                    name="telefono" maxLength={50} autoComplete="tel"
                     value={formData.telefono}
                     onChange={handleChange}
                     placeholder="+54 9 ..."
@@ -228,7 +185,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                 </label>
                 <textarea
                   id="mensaje"
-                  name="mensaje"
+                  name="mensaje" maxLength={4900}
                   rows={4}
                   required
                   value={formData.mensaje}
@@ -247,7 +204,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                 <span>{submitting ? 'ENVIANDO...' : 'ENVIAR CONSULTA'}</span>
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </button>
-            </form>
+            <p className="text-xs leading-6 text-[#F4F1EB]/55">Usamos tus datos para responder a tu consulta. <SiteLink href="/privacidad" className="underline underline-offset-4">Conocé nuestra política de privacidad.</SiteLink></p></form>
           </div>
 
         </div>

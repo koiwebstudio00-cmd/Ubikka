@@ -1,0 +1,32 @@
+{
+  "functions": {
+    "api/page.ts": {
+      "includeFiles": "dist/index.html"
+    }
+  },
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/api/page?path=/"
+    },
+    {
+      "src": "/(propiedades(?:/[^/]+)?|privacidad)/?",
+      "dest": "/api/page?path=/$1"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/api/seo?kind=robots"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/api/seo?kind=sitemap"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(?!api(?:/|$)|assets(?:/|$)|images(?:/|$))(.*)",
+      "dest": "/api/page?path=/$1"
+    }
+  ]
+}

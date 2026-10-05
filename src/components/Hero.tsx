@@ -1,3 +1,4 @@
+import { SiteLink } from './SiteLink';
 import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
@@ -26,7 +27,7 @@ export const Hero: React.FC<HeroProps> = ({ sectionRef }) => {
     <section ref={sectionRef} id="hero" className={`hero ${sceneReady ? 'hero-ready' : ''}`} aria-labelledby="hero-title">
       <div className="hero-scene">
         <div className="hero-layer hero-sky" aria-hidden="true">
-          <img src="/images/hero-sky.png" alt="" width="1672" height="941" fetchPriority="high" />
+          <img src="/images/hero-sky.webp" alt="" width="1672" height="941" fetchPriority="high" />
         </div>
 
         {/* The transparent mountain silhouette masks the wordmark naturally. */}
@@ -35,7 +36,7 @@ export const Hero: React.FC<HeroProps> = ({ sectionRef }) => {
         </h1>
 
         <div className="hero-layer hero-house" aria-hidden="true">
-          <img className="hero-house-image" src="/images/hero-house.png" alt="" width="1672" height="941" fetchPriority="high" />
+          <img className="hero-house-image" src="/images/hero-house.webp" alt="" width="1672" height="941" fetchPriority="high" />
         </div>
         <div className="hero-shade" aria-hidden="true" />
       </div>
@@ -46,10 +47,10 @@ export const Hero: React.FC<HeroProps> = ({ sectionRef }) => {
           Residencias exclusivas en las zonas más<br className="hidden sm:block" />
           {' '}privilegiadas de <strong>Tucumán, Argentina.</strong>
         </p>
-        <a href="#propiedades" className="hero-cta group">
+        <SiteLink href="#propiedades" className="hero-cta group">
           <span>Ver propiedades</span>
           <ArrowRight size={19} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none" />
-        </a>
+        </SiteLink>
       </div>
     </section>
   );

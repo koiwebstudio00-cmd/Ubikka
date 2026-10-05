@@ -1,3 +1,4 @@
+import { SiteLink } from './SiteLink';
 import React from 'react';
 import { CTA_BACKGROUND_IMAGE } from '../data/properties';
 import { ArrowRight } from 'lucide-react';
@@ -33,13 +34,13 @@ export const CTASection: React.FC = () => {
         </p>
 
         {/* CTA Button */}
-        <a
+        <SiteLink
           href="#contacto"
           className="inline-flex items-center gap-3 border border-[#E6E0D6] text-[#E6E0D6] hover:bg-[#E6E0D6] hover:text-[#0E1216] font-medium text-[12px] tracking-[0.25em] uppercase px-8 py-4 transition-all duration-300 group"
         >
           <span>AGENDAR CONSULTA</span>
           <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1.5" />
-        </a>
+        </SiteLink>
       </div>
     </section>
   );

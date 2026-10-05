@@ -1,5 +1,8 @@
+import { SiteLink } from './SiteLink';
+import { useResource } from '../lib/resource';
+import { fromApi } from '../lib/catalog';
 import React, { useState } from 'react';
-import { PROPERTIES, Property } from '../data/properties';
+import { Property } from '../data/properties';
 import { PropertyCard } from './PropertyCard';
 import { ArrowRight } from 'lucide-react';
 
@@ -12,10 +15,12 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({
 }) => {
   const [filter, setFilter] = useState<'TODAS' | 'VENTA' | 'ALQUILER'>('TODAS');
 
-  const filteredProperties = PROPERTIES.filter((p) => {
+  const { data, loading, error, retry } = useResource('/api/properties');
+  const properties: Property[] = (data?.data || []).map(fromApi);
+  const filteredProperties = [...properties].sort((a, b) => Number(b.featured) - Number(a.featured)).filter((p) => {
     if (filter === 'TODAS') return true;
-    return p.operation === filter;
-  });
+    return p.operation.includes(filter);
+  }).slice(0, 6);
 
   return (
     <section id="propiedades" aria-labelledby="properties-title" className="py-24 md:py-36 bg-[#0E1216] border-t border-[#E6E0D6]/05">
@@ -53,18 +58,27 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({
               ))}
             </div>
 
-            <a
-              href="#contacto"
+            <SiteLink
+              href="/propiedades"
               className="hidden md:inline-flex items-center gap-2 text-[12px] tracking-[0.25em] uppercase font-medium text-[#E6E0D6] hover:text-white transition-colors duration-300 group"
             >
               <span>VER TODAS</span>
               <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
+            </SiteLink>
           </div>
         </div>
 
+        {loading && <div role="status" aria-label="Cargando propiedades" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12">
+          <span className="sr-only">Cargando propiedades…</span>
+          {[1, 2, 3].map(i => <div key={i} aria-hidden="true" className="motion-safe:animate-pulse border border-[#E6E0D6]/10">
+            <div className="aspect-[4/3] bg-[#1B1F26]" />
+            <div className="p-8 space-y-5"><div className="h-4 w-2/3 bg-[#1B1F26]" /><div className="h-7 w-3/4 bg-[#1B1F26]" /><div className="h-16 bg-[#1B1F26]" /></div>
+          </div>)}
+        </div>}
+        {error && <p role="alert">No pudimos cargar las propiedades. <button onClick={retry} className="underline">Reintentar</button></p>}
+        {!loading && !error && !filteredProperties.length && <p className="text-sm text-[#F4F1EB]/65">No hay propiedades disponibles para esta operación.</p>}
         {/* Properties Grid - 2 columns on desktop/tablet, 1 column on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12">
           {filteredProperties.map((property) => (
             <PropertyCard
               key={property.id}
@@ -76,13 +90,13 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({
 
         {/* Mobile View All CTA */}
         <div className="mt-12 text-center md:hidden">
-          <a
-            href="#contacto"
+          <SiteLink
+            href="/propiedades"
             className="inline-flex items-center gap-2 text-[12px] tracking-[0.25em] uppercase font-medium text-[#E6E0D6] border border-[#E6E0D6]/20 px-6 py-3"
           >
             <span>VER TODAS</span>
             <ArrowRight size={15} />
-          </a>
+          </SiteLink>
         </div>
       </div>
     </section>
