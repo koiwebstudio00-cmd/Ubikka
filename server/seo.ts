@@ -1,5 +1,5 @@
-import { localBusiness, propertyMetadata, privacyTitle, privacyDescription, privacySections } from '../shared/public-content';
-import { lokation } from './lokation';
+import { localBusiness, propertyMetadata, privacyTitle, privacyDescription, privacySections } from '../shared/public-content.js';
+import { lokation } from './lokation.js';
 export const escape = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export function siteOrigin(env: NodeJS.ProcessEnv) {
   try { const url = new URL(env.SITE_URL || ''); return url.protocol === 'https:' ? url.origin : ''; } catch { return ''; }

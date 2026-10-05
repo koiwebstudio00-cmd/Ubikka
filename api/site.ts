@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { lokation } from '../server/lokation';
+import { lokation } from '../server/lokation.js';
 export default async function handler(req: IncomingMessage, res: ServerResponse, env = process.env) {
   res.setHeader('Content-Type', 'application/json'); res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'GET') { res.setHeader('Allow', 'GET'); res.statusCode = 405; res.end('{}'); return; }

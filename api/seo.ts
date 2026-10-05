@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { escape, inventory, siteOrigin } from '../server/seo';
+import { escape, inventory, siteOrigin } from '../server/seo.js';
 export default async function handler(req: IncomingMessage, res: ServerResponse, env = process.env) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'GET') { res.setHeader('Allow', 'GET'); res.statusCode = 405; res.end(); return; }

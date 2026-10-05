@@ -1,4 +1,4 @@
-import { lokation } from '../server/lokation';
+import { lokation } from '../server/lokation.js';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
 // La clave sólo se lee en el servidor (Vercel Function o middleware de Vite).

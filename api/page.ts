@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { pageHtml } from '../server/seo';
+import { pageHtml } from '../server/seo.js';
 export default async function handler(req: IncomingMessage, res: ServerResponse, env = process.env, template?: string) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'GET' && req.method !== 'HEAD') { res.setHeader('Allow', 'GET, HEAD'); res.statusCode = 405; res.end(); return; }
