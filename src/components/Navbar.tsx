@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({ headerRef, logoVisible, onContac
       <div className="navbar-inner">
         <Logo
           href={`${homeHref}#hero`}
-          variant="cream"
+          variant="light"
           className="navbar-brand min-h-11 min-w-11"
           textClassName="navbar-wording"
           textHidden={!logoVisible}
@@ -76,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({ headerRef, logoVisible, onContac
         <button
           ref={menuButtonRef}
           onClick={() => setMobileMenuOpen((open) => !open)}
-          className="lg:hidden text-[#E6E0D6] p-2"
+          className="navbar-menu-trigger lg:hidden text-[#E6E0D6] p-2"
           aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-navigation"

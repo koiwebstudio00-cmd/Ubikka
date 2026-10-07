@@ -24,12 +24,12 @@ export function PropertyInquiry({ property, phone }: { property: Property; phone
       <label className="sr-only" htmlFor="inquiry-name">Nombre completo</label><input id="inquiry-name" name="nombre" placeholder="Nombre completo" autoComplete="name" required maxLength={200} />
       <label className="sr-only" htmlFor="inquiry-phone">Teléfono</label><input id="inquiry-phone" name="telefono" type="tel" placeholder="Teléfono" autoComplete="tel" maxLength={50} aria-describedby="contact-help" />
       <label className="sr-only" htmlFor="inquiry-email">Email</label><input id="inquiry-email" name="email" type="email" placeholder="Email" autoComplete="email" maxLength={254} aria-describedby="contact-help" />
-      <p id="contact-help" className="text-xs text-[#F4F1EB]/60">Dejá al menos un dato de contacto: teléfono o email.</p>
+      <p id="contact-help" className="text-xs text-[#E6E0D6]/60">Dejá al menos un dato de contacto: teléfono o email.</p>
       <label className="sr-only" htmlFor="inquiry-message">Mensaje</label><textarea id="inquiry-message" name="mensaje" rows={5} required maxLength={5000} defaultValue={`Hola, me interesa la propiedad «${property.title}». Quisiera recibir más información.`} />
       <div hidden aria-hidden="true"><label>Sitio web<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
       {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
       <button disabled={pending} className="property-action property-action-primary w-full disabled:opacity-50">{pending ? 'Enviando…' : 'Consultar por esta propiedad'}</button>
-    <p className="text-xs leading-6 text-[#F4F1EB]/55">Usamos tus datos para responder a tu consulta. <SiteLink href="/privacidad" className="underline underline-offset-4">Conocé nuestra política de privacidad.</SiteLink></p></form>}
+    <p className="text-xs leading-6 text-[#E6E0D6]/55">Usamos tus datos para responder a tu consulta. <SiteLink href="/privacidad" className="underline underline-offset-4">Conocé nuestra política de privacidad.</SiteLink></p></form>}
     {phone && <><p className="inquiry-divider">O CONTACTANOS VÍA</p><SiteLink className="property-action w-full bg-[#16a34a] text-white" href={`https://wa.me/${phone}?text=${encodeURIComponent(`Hola, me interesa ${property.title}: ${window.location.origin}/propiedades/${property.slug}`)}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} /> WhatsApp directo</SiteLink></>}
   </section>;
 }

@@ -31,10 +31,12 @@ export function useHeroScroll() {
       const easedFade = fadeProgress * fadeProgress * (3 - 2 * fadeProgress);
       // Deriving opacity from position makes the fade fully reversible.
       hero.style.setProperty('--hero-wordmark-opacity', String(0.88 - 0.82 * easedFade));
-      navbar.style.setProperty('--logo-reveal', String(clamp((progress - 0.65) / 0.28)));
+      const mobile = window.innerWidth < 640;
+      const wordingStart = mobile ? 0.78 : 0.65;
+      navbar.style.setProperty('--logo-reveal', String(clamp((progress - wordingStart) / (1 - wordingStart))));
       navbar.style.setProperty('--surface-reveal', String(clamp((progress - 0.45) / 0.45)));
 
-      const nextVisible = progress > 0.65;
+      const nextVisible = progress > wordingStart;
       if (nextVisible !== visible) {
         visible = nextVisible;
         setLogoVisible(nextVisible);

@@ -44,8 +44,8 @@ export const Hero: React.FC<HeroProps> = ({ sectionRef }) => {
       <div className="hero-content">
         <div className="hero-rule" aria-hidden="true" />
         <p className="hero-description">
-          Residencias exclusivas en las zonas más<br className="hidden sm:block" />
-          {' '}privilegiadas de <strong>Tucumán, Argentina.</strong>
+          Alquileres · Administración · Ventas<br className="hidden sm:block" />
+          {' '}en <strong>San Miguel de Tucumán.</strong>
         </p>
         <SiteLink href="#propiedades" className="hero-cta group">
           <span>Ver propiedades</span>

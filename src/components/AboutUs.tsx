@@ -29,7 +29,7 @@ export const AboutUs: React.FC = () => {
   }, []);
 
   return (
-    <section aria-labelledby="about-title" className="py-24 md:py-36 bg-[#1B1F26] border-t border-b border-[#E6E0D6]/10 relative overflow-hidden">
+    <section aria-labelledby="about-title" className="py-24 md:py-36 bg-[#3A3936] border-t border-b border-[#E6E0D6]/10 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
@@ -38,13 +38,13 @@ export const AboutUs: React.FC = () => {
             <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] overflow-hidden border border-[#E6E0D6]/15">
               <img
                 src={ABOUT_IMAGE}
-                alt="Retrato en un interior contemporáneo"
-                width="1254"
-                height="1254"
-                className="w-full h-full object-cover object-top grayscale-[15%] group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02]"
+                alt="Retrato del equipo de Ubikka"
+                width="1122"
+                height="1402"
+                className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-[#0E1216]/20 group-hover:bg-transparent transition-colors duration-500" />
+              <div className="absolute inset-0 bg-[#3A3936]/20 group-hover:bg-transparent transition-colors duration-500" />
             </div>
 
             {/* Subtle decorative accent corner frame */}
@@ -54,25 +54,25 @@ export const AboutUs: React.FC = () => {
           {/* Right Column: Editorial Copy */}
           <div ref={copyRef} className="about-copy flex flex-col justify-center">
             {/* Eyebrow */}
-            <span className="about-reveal text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium text-[#E6E0D6]/80 block mb-4">
+            <span className="brand-eyebrow about-reveal text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium block mb-4">
               NOSOTROS
             </span>
 
             {/* Heading */}
-            <h2 id="about-title" className="about-reveal text-3xl md:text-4xl lg:text-5xl font-light text-[#F4F1EB] leading-[1.25] tracking-tight mb-8">
-              Una forma diferente de vivir el mercado inmobiliario.
+            <h2 id="about-title" className="about-reveal text-3xl md:text-4xl lg:text-5xl font-light text-[#E6E0D6] leading-[1.25] tracking-tight mb-8">
+              Ubicar es encontrar.
             </h2>
 
             {/* Paragraphs with generous spacing */}
-            <div className="space-y-6 text-[#F4F1EB]/80 text-[15px] md:text-[16px] font-normal leading-relaxed">
+            <div className="space-y-6 text-[#E6E0D6]/80 text-[15px] md:text-[16px] font-normal leading-relaxed">
               <p className="about-reveal">
-                En UBIKKA entendemos que elegir una propiedad es mucho más que encontrar metros cuadrados.
+                Ubikka viene de ubicar: encontrar lo que buscás.
               </p>
               <p className="about-reveal">
-                Buscamos espacios que conecten con la forma de vivir, invertir y proyectar el futuro de cada persona.
+                Trabajamos para que se encuentren quien vende y quien compra, quien ofrece un alquiler y quien busca una propiedad.
               </p>
               <p className="about-reveal">
-                Combinamos conocimiento del mercado, criterio arquitectónico y acompañamiento personalizado para construir relaciones de largo plazo.
+                Nuestro punto amarillo representa ese encuentro y destaca la información que importa para decidir.
               </p>
             </div>
 
@@ -82,7 +82,7 @@ export const AboutUs: React.FC = () => {
                 href="#contacto"
                 className="inline-flex items-center gap-3 text-[12px] tracking-[0.25em] uppercase font-medium text-[#E6E0D6] hover:text-white transition-colors duration-300 group py-2"
               >
-                <span>CONOCER UBIKKA</span>
+                <span>HABLAR CON UBIKKA</span>
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-2" />
               </SiteLink>
             </div>

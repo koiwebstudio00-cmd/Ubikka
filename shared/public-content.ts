@@ -11,7 +11,7 @@ export const privacySections = [
 ] as const;
 export function localBusiness(site: { nombre?: string; telefono?: string; email?: string; direccion?: string; ciudad?: string } | null, origin = '') {
   return { '@type': 'RealEstateAgent', name: site?.nombre || 'Ubikka Inmobiliaria',
-    ...(origin ? { '@id': `${origin}/#inmobiliaria`, url: `${origin}/`, logo: `${origin}/favicon.svg` } : {}),
+    ...(origin ? { '@id': `${origin}/#inmobiliaria`, url: `${origin}/`, logo: `${origin}/images/ubikka-lettering.png` } : {}),
     ...(site?.telefono ? { telephone: site.telefono } : {}), ...(site?.email ? { email: site.email } : {}),
     ...(site?.direccion || site?.ciudad ? { address: { '@type':'PostalAddress', ...(site.direccion ? { streetAddress:site.direccion } : {}), ...(site.ciudad ? { addressLocality:site.ciudad } : {}) } } : {}),
   };

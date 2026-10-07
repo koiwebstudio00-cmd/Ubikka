@@ -20,7 +20,7 @@ export function usePageSeo(title: string, description: string, entity?: object, 
     document.querySelectorAll('script[type="application/ld+json"]').forEach(node => node.remove());
     const script = document.createElement('script'); script.type = 'application/ld+json';
     const entityData = JSON.parse(serialized);
-    const business = entityData['@type'] === 'RealEstateAgent' && url ? { '@id': `${new URL(url).origin}/#inmobiliaria`, logo: `${new URL(url).origin}/favicon.svg` } : {};
+    const business = entityData['@type'] === 'RealEstateAgent' && url ? { '@id': `${new URL(url).origin}/#inmobiliaria`, logo: `${new URL(url).origin}/images/ubikka-lettering.png` } : {};
     script.textContent = JSON.stringify({ '@context':'https://schema.org', ...entityData, ...business, ...(url ? {url} : {}) }); document.head.append(script);
   }, [pathname, title, description, serialized, unavailable]);
 }

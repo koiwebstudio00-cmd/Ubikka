@@ -62,7 +62,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
   };
 
   return (
-    <section id="contacto" className="scroll-mt-20 py-24 md:py-36 bg-[#0E1216] relative border-t border-[#E6E0D6]/10">
+    <section id="contacto" className="scroll-mt-20 py-24 md:py-36 bg-[#3A3936] relative border-t border-[#E6E0D6]/10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* 2 Columns Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
@@ -71,17 +71,17 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
           <div className="space-y-10">
         {/* Title */}
         <div className="mb-12">
-          <span className="text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium text-[#E6E0D6]/80 block mb-3">
+          <span className="brand-eyebrow text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium block mb-3">
             CONTACTO
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-[#F4F1EB] tracking-tight">
-            Hablemos de tu próximo espacio.
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-[#E6E0D6] tracking-tight">
+            Contanos qué estás buscando.
           </h2>
         </div>
 
 
-            <p className="text-[15px] text-[#F4F1EB]/70 font-normal leading-relaxed">
-              Estamos a tu disposición para asesorarte con cercanía y confidencialidad en cada proyecto inmobiliario.
+            <p className="text-[15px] text-[#E6E0D6]/70 font-normal leading-relaxed">
+              Te ayudamos a comprender la información y los pasos de cada operación para que puedas decidir con claridad.
             </p>
 
             <div className="space-y-6 pt-2 text-sm">
@@ -93,9 +93,9 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
           </div>
 
           {/* Right Column: Minimalist Contact Form */}
-          <div className="bg-[#1B1F26]/30 border border-[#E6E0D6]/15 rounded-xl p-6 md:p-8 relative">
+          <div className="bg-[#3A3936]/30 border border-[#E6E0D6]/15 rounded-xl p-6 md:p-8 relative">
             {submitted && (
-              <div role="status" className="mb-6 p-4 border border-[#E6E0D6]/30 bg-[#1B1F26] text-[#E6E0D6] text-[13px] flex items-center gap-3 animate-fadeIn">
+              <div role="status" className="mb-6 p-4 border border-[#E6E0D6]/30 bg-[#3A3936] text-[#E6E0D6] text-[13px] flex items-center gap-3 animate-fadeIn">
                 <CheckCircle2 size={18} className="shrink-0 text-[#E6E0D6]" />
                 <span>Gracias. Recibimos tu consulta y nos pondremos en contacto a la brevedad.</span>
               </div>
@@ -103,7 +103,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
 
             <form onSubmit={handleSubmit} className="space-y-6" aria-busy={submitting}>
               <div hidden aria-hidden="true"><label>Sitio web<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
-              <p className="text-sm text-[#F4F1EB]/70">Dejá tu teléfono o email para que podamos responderte.</p>
+              <p className="text-sm text-[#E6E0D6]/70">Dejá tu teléfono o email para que podamos responderte.</p>
               {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Nombre */}
@@ -119,7 +119,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                     value={formData.nombre}
                     onChange={handleChange}
                     placeholder="Tu nombre completo"
-                    className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#F4F1EB] placeholder-[#6B6F76] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors"
+                    className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#E6E0D6] placeholder-[#C9CDD2] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors"
                   />
                 </div>
 
@@ -135,7 +135,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="tu@email.com"
-                    className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#F4F1EB] placeholder-[#6B6F76] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors"
+                    className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#E6E0D6] placeholder-[#C9CDD2] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors"
                   />
                 </div>
               </div>
@@ -153,7 +153,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                     value={formData.telefono}
                     onChange={handleChange}
                     placeholder="+54 9 ..."
-                    className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#F4F1EB] placeholder-[#6B6F76] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors"
+                    className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#E6E0D6] placeholder-[#C9CDD2] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors"
                   />
                 </div>
 
@@ -167,13 +167,13 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                     name="busqueda"
                     value={formData.busqueda}
                     onChange={handleChange}
-                    className="w-full bg-[#0E1216] border border-[#E6E0D6]/20 px-4 py-3 text-[#F4F1EB] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors cursor-pointer"
+                    className="w-full bg-[#3A3936] border border-[#E6E0D6]/20 px-4 py-3 text-[#E6E0D6] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors cursor-pointer"
                   >
-                    <option value="Comprar" className="bg-[#0E1216] text-[#F4F1EB]">Comprar</option>
-                    <option value="Alquilar" className="bg-[#0E1216] text-[#F4F1EB]">Alquilar</option>
-                    <option value="Vender" className="bg-[#0E1216] text-[#F4F1EB]">Vender</option>
-                    <option value="Invertir" className="bg-[#0E1216] text-[#F4F1EB]">Invertir</option>
-                    <option value="Otro" className="bg-[#0E1216] text-[#F4F1EB]">Otro</option>
+                    <option value="Comprar" className="bg-[#3A3936] text-[#E6E0D6]">Comprar</option>
+                    <option value="Alquilar" className="bg-[#3A3936] text-[#E6E0D6]">Alquilar</option>
+                    <option value="Vender" className="bg-[#3A3936] text-[#E6E0D6]">Vender</option>
+                    <option value="Invertir" className="bg-[#3A3936] text-[#E6E0D6]">Invertir</option>
+                    <option value="Otro" className="bg-[#3A3936] text-[#E6E0D6]">Otro</option>
                   </select>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
                   value={formData.mensaje}
                   onChange={handleChange}
                   placeholder="Escribinos tus inquietudes o tipo de propiedad que estás buscando..."
-                  className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#F4F1EB] placeholder-[#6B6F76] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors resize-none"
+                  className="w-full bg-transparent border border-[#E6E0D6]/20 px-4 py-3 text-[#E6E0D6] placeholder-[#C9CDD2] text-[14px] focus:outline-none focus:border-[#E6E0D6] transition-colors resize-none"
                 />
               </div>
 
@@ -199,12 +199,12 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-[#E6E0D6] text-[#0E1216] font-medium text-[12px] tracking-[0.25em] uppercase py-4 px-6 hover:bg-white transition-colors duration-300 flex items-center justify-center gap-3 group"
+                className="w-full bg-[#E6E0D6] text-[#3A3936] font-medium text-[12px] tracking-[0.25em] uppercase py-4 px-6 hover:bg-white transition-colors duration-300 flex items-center justify-center gap-3 group"
               >
                 <span>{submitting ? 'ENVIANDO...' : 'ENVIAR CONSULTA'}</span>
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </button>
-            <p className="text-xs leading-6 text-[#F4F1EB]/55">Usamos tus datos para responder a tu consulta. <SiteLink href="/privacidad" className="underline underline-offset-4">Conocé nuestra política de privacidad.</SiteLink></p></form>
+            <p className="text-xs leading-6 text-[#E6E0D6]/55">Usamos tus datos para responder a tu consulta. <SiteLink href="/privacidad" className="underline underline-offset-4">Conocé nuestra política de privacidad.</SiteLink></p></form>
           </div>
 
         </div>

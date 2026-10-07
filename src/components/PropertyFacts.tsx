@@ -14,7 +14,7 @@ export function PropertyFacts({ property }: { property: Property }) {
       {facts.map(({ value, label, suffix, icon: Icon }) => (
         <div key={label} className="flex flex-col items-center text-center text-[#E6E0D6]">
           <Icon size={19} strokeWidth={1.4} aria-hidden="true" className="mb-3" />
-          <dt className="order-2 mt-1 text-[10px] sm:text-xs text-[#F4F1EB]/60">{label}</dt>
+          <dt className="order-2 mt-1 text-[10px] sm:text-xs text-[#E6E0D6]/60">{label}</dt>
           <dd className="text-lg font-light">{value}{suffix}</dd>
         </div>
       ))}

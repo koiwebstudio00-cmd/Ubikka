@@ -67,7 +67,7 @@ function RouteEffects() {
   return null;
 }
 export default function App() {
-  return <BrowserRouter><RouteEffects /><div className="min-h-screen bg-[#0E1216] text-[#F4F1EB] font-[Poppins] selection:bg-[#E6E0D6] selection:text-[#0E1216]">
+  return <BrowserRouter><RouteEffects /><div className="min-h-screen bg-[#3A3936] text-[#E6E0D6] font-[Poppins] selection:bg-[#E6E0D6] selection:text-[#3A3936]">
     <Routes><Route path="/" element={<HomePage />} /><Route path="/propiedades" element={<PropertiesPage />} /><Route path="/propiedades/:slug" element={<LivePropertyPage />} /><Route path="/privacidad" element={<PrivacyPage />} /><Route path="*" element={<NotFoundPage />} /></Routes>
   </div></BrowserRouter>;
 }
