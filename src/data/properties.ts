@@ -17,5 +17,5 @@ export interface Property {
 }
 
 export const HERO_BACKGROUND_IMAGE = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=90";
-export const ABOUT_IMAGE = "/images/nosotros-equipo.webp";
+export const ABOUT_IMAGE = "/images/about-casa-boutique.webp";
 export const CTA_BACKGROUND_IMAGE = "/images/cta-background.webp";

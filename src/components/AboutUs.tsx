@@ -33,15 +33,15 @@ export const AboutUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
-          {/* Left Column: Portrait */}
+          {/* Left Column: Architectural editorial image */}
           <div className="relative group">
             <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] overflow-hidden border border-[#E6E0D6]/15">
               <img
                 src={ABOUT_IMAGE}
-                alt="Retrato del equipo de Ubikka"
-                width="1122"
-                height="1402"
-                className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                alt="Casa boutique contemporánea entre vegetación de montaña al atardecer"
+                width="1024"
+                height="1536"
+                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-[#3A3936]/20 group-hover:bg-transparent transition-colors duration-500" />
