@@ -1,4 +1,4 @@
-# Ubikka · web de la inmobiliaria
+# Ubikka · web de la inmobiliaria.
 
 Actualizado: **2026-10-04**.
 
