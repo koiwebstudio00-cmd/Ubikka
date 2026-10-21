@@ -33,14 +33,14 @@ export const AboutUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
-          {/* Left Column: Architectural editorial image */}
+          {/* Left Column: Ubikka team portrait */}
           <div className="relative group">
             <div className="relative aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] overflow-hidden border border-[#E6E0D6]/15">
               <img
                 src={ABOUT_IMAGE}
-                alt="Casa boutique contemporánea entre vegetación de montaña al atardecer"
-                width="1024"
-                height="1536"
+                alt="Karen y Flor, equipo de Ubikka, en su oficina"
+                width="1122"
+                height="1402"
                 className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 loading="lazy"
               />
@@ -60,19 +60,13 @@ export const AboutUs: React.FC = () => {
 
             {/* Heading */}
             <h2 id="about-title" className="about-reveal text-3xl md:text-4xl lg:text-5xl font-light text-[#E6E0D6] leading-[1.25] tracking-tight mb-8">
-              Ubicar es encontrar.
+              Entender antes de decidir<span className="brand-title-point" aria-hidden="true" />
             </h2>
 
             {/* Paragraphs with generous spacing */}
             <div className="space-y-6 text-[#E6E0D6]/80 text-[15px] md:text-[16px] font-normal leading-relaxed">
               <p className="about-reveal">
-                Ubikka viene de ubicar: encontrar lo que buscás.
-              </p>
-              <p className="about-reveal">
-                Trabajamos para que se encuentren quien vende y quien compra, quien ofrece un alquiler y quien busca una propiedad.
-              </p>
-              <p className="about-reveal">
-                Nuestro punto amarillo representa ese encuentro y destaca la información que importa para decidir.
+                Ubikka es una inmobiliaria de Tucumán. Trabajamos en alquileres, administración y ventas. En cada operación explicamos precio, papeles, condiciones y alternativas, paso a paso.
               </p>
             </div>
 

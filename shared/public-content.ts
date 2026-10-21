@@ -1,5 +1,14 @@
 export const privacyTitle = 'Privacidad y datos personales | Ubikka';
 export const privacyDescription = 'Conocé qué datos recibe Ubikka al consultar por una propiedad, para qué se utilizan y cómo solicitar su actualización o eliminación.';
+export const homeDescription = 'En Ubikka te explicamos precio, papeles y condiciones de cada operación para que entiendas antes de decidir. Alquileres, administración y ventas en San Miguel de Tucumán.';
+export const brandContact = {
+  phoneDisplay: '381 202 0364',
+  phoneHref: 'tel:+5493812020364',
+  whatsappHref: 'https://wa.me/5493812020364',
+  address: 'Lamadrid 377, 2.º B',
+  city: 'San Miguel de Tucumán',
+  registration: 'Matrícula CCIT 474',
+} as const;
 export const privacySections = [
   ['Quién recibe tu consulta', 'Los formularios de este sitio están dirigidos a Ubikka Inmobiliaria. Lokation es la plataforma que utiliza Ubikka para gestionar sus propiedades y consultas. Koi Studio desarrolla el sitio.'],
   ['Qué información se solicita', 'Al enviar una consulta se solicita tu nombre, mensaje y al menos un medio de contacto: teléfono o correo electrónico. En las consultas desde una ficha se agrega la referencia de esa propiedad; en el formulario general se agrega el motivo de tu búsqueda. Evitá incluir documentos, datos bancarios u otra información sensible.'],
@@ -12,8 +21,8 @@ export const privacySections = [
 export function localBusiness(site: { nombre?: string; telefono?: string; email?: string; direccion?: string; ciudad?: string } | null, origin = '') {
   return { '@type': 'RealEstateAgent', name: site?.nombre || 'Ubikka Inmobiliaria',
     ...(origin ? { '@id': `${origin}/#inmobiliaria`, url: `${origin}/`, logo: `${origin}/images/ubikka-lettering.png` } : {}),
-    ...(site?.telefono ? { telephone: site.telefono } : {}), ...(site?.email ? { email: site.email } : {}),
-    ...(site?.direccion || site?.ciudad ? { address: { '@type':'PostalAddress', ...(site.direccion ? { streetAddress:site.direccion } : {}), ...(site.ciudad ? { addressLocality:site.ciudad } : {}) } } : {}),
+    telephone: site?.telefono || brandContact.phoneDisplay, ...(site?.email ? { email: site.email } : {}),
+    address: { '@type':'PostalAddress', streetAddress: site?.direccion || brandContact.address, addressLocality: site?.ciudad || brandContact.city },
   };
 }
 export function propertyMetadata(p: Record<string, any>) {

@@ -57,6 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({ headerRef, logoVisible, onContac
         <Logo
           href={`${homeHref}#hero`}
           variant="light"
+          showIcon={false}
           className="navbar-brand min-h-11 min-w-11"
           textClassName="navbar-wording"
           textHidden={!logoVisible}

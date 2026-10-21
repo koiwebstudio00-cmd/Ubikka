@@ -30,12 +30,24 @@ export const Hero: React.FC<HeroProps> = ({ sectionRef }) => {
           <img src="/images/hero-sky.webp" alt="" width="1672" height="941" fetchPriority="high" />
         </div>
 
-        {/* The transparent mountain silhouette masks the wordmark naturally. */}
+        {/* Keep the official artwork in the parallax scene; the accessible name stays as text. */}
         <h1 id="hero-title" className="hero-wordmark">
-          <span className="hero-wordmark-text">UBIKKA</span>
+          <span className="sr-only">Ubikka Inmobiliaria</span>
+          <img
+            className="hero-wordmark-image"
+            src="/images/ubikka-hero-logotipo.png"
+            alt=""
+            aria-hidden="true"
+            width="1983"
+            height="793"
+            fetchPriority="high"
+          />
         </h1>
 
-        <div className="hero-layer hero-house" aria-hidden="true">
+        <div className="hero-layer hero-house hero-house-back" aria-hidden="true">
+          <img className="hero-house-image" src="/images/hero-house.webp" alt="" width="1672" height="941" fetchPriority="high" />
+        </div>
+        <div className="hero-layer hero-house hero-house-front" aria-hidden="true">
           <img className="hero-house-image" src="/images/hero-house.webp" alt="" width="1672" height="941" fetchPriority="high" />
         </div>
         <div className="hero-shade" aria-hidden="true" />

@@ -1,4 +1,4 @@
-import { localBusiness, propertyMetadata, privacyTitle, privacyDescription, privacySections } from '../shared/public-content.js';
+import { homeDescription, localBusiness, propertyMetadata, privacyTitle, privacyDescription, privacySections } from '../shared/public-content.js';
 import { lokation } from './lokation.js';
 export const escape = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export function siteOrigin(env: NodeJS.ProcessEnv) {
@@ -20,9 +20,9 @@ export async function inventory(env: NodeJS.ProcessEnv) {
 export async function pageHtml(template: string, pathname: string, env: NodeJS.ProcessEnv) {
   const origin = siteOrigin(env);
   let title = 'Ubikka Inmobiliaria | Propiedades en Tucumán';
-  let description = 'Encontrá propiedades en venta y alquiler en Tucumán. Consultá a Ubikka por tu próximo espacio.';
-  let content = '<h1>Ubikka Inmobiliaria</h1><p>Espacios que construyen futuro. Propiedades en Tucumán.</p><a href="/propiedades">Ver propiedades</a>';
-  let image = origin ? `${origin}/images/hero-sky.webp` : '';
+  let description = homeDescription;
+  let content = '<h1>Ubikka Inmobiliaria</h1><p>Entender antes de decidir. Alquileres, administración y ventas en San Miguel de Tucumán.</p><a href="/propiedades">Ver propiedades</a>';
+  let image = origin ? `${origin}/images/ubikka-social-share.jpg` : '';
   let bootstrap: unknown;
   let status = 200;
   let canonicalPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
@@ -59,6 +59,6 @@ export async function pageHtml(template: string, pathname: string, env: NodeJS.P
   if (status === 404) { title = '404 · Página no encontrada | Ubikka'; description = 'Volvé al catálogo para ver las propiedades disponibles.'; content = '<a href="/"><img src="/favicon.svg" alt="Ubikka Inmobiliaria" width="72" height="72"></a><p>404</p><h1>Página no encontrada</h1><a href="/propiedades">Ver propiedades disponibles</a>'; structured = null; }
   const index = origin && status === 200 && env.VERCEL_ENV !== 'preview';
   const canonical = origin ? `${origin}${canonicalPath}` : '';
-  const head = `${bootstrap ? `<script id="initial-data" type="application/json">${JSON.stringify(bootstrap).replace(/</g, '\\u003c')}</script>` : ''}<meta name="robots" data-base="${origin && env.VERCEL_ENV !== 'preview' ? 'index,follow' : 'noindex,follow'}" content="${index ? 'index,follow' : 'noindex,follow'}" />${canonical ? `<link rel="canonical" href="${escape(canonical)}" />` : ''}<meta property="og:type" content="website" /><meta property="og:locale" content="es_AR" /><meta property="og:title" content="${escape(title)}" /><meta property="og:description" content="${escape(description)}" />${canonical ? `<meta property="og:url" content="${escape(canonical)}" />` : ''}${image ? `<meta property="og:image" content="${escape(image)}" />` : ''}<meta name="twitter:card" content="summary_large_image" />${structured ? `<script type="application/ld+json">${JSON.stringify(structured).replace(/</g, '\\u003c')}</script>` : ''}`;
+  const head = `${bootstrap ? `<script id="initial-data" type="application/json">${JSON.stringify(bootstrap).replace(/</g, '\\u003c')}</script>` : ''}<meta name="robots" data-base="${origin && env.VERCEL_ENV !== 'preview' ? 'index,follow' : 'noindex,follow'}" content="${index ? 'index,follow' : 'noindex,follow'}" />${canonical ? `<link rel="canonical" href="${escape(canonical)}" />` : ''}<meta property="og:type" content="website" /><meta property="og:locale" content="es_AR" /><meta property="og:title" content="${escape(title)}" /><meta property="og:description" content="${escape(description)}" />${canonical ? `<meta property="og:url" content="${escape(canonical)}" />` : ''}${image ? `<meta property="og:image" content="${escape(image)}" /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:alt" content="Ubikka Inmobiliaria" /><meta name="twitter:image" content="${escape(image)}" />` : ''}<meta name="twitter:card" content="summary_large_image" />${structured ? `<script type="application/ld+json">${JSON.stringify(structured).replace(/</g, '\\u003c')}</script>` : ''}`;
   return { status, html: template.replace(/<title>.*?<\/title>/s, `<title>${escape(title)}</title>`).replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${escape(description)}" />`).replace('</head>', `${head}</head>`).replace('<div id="root"></div>', `<div id="root"><main style="padding:2rem;max-width:75rem;margin:auto">${content}</main></div>`) };
 }

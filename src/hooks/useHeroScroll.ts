@@ -17,13 +17,18 @@ export function useHeroScroll() {
     let heroTop = 0;
     let heroHeight = 1;
     let lastProgress = -1;
+    let lastLogoProgress = -1;
     let visible: boolean | undefined;
 
     const update = () => {
       frame = 0;
-      const progress = clamp((getPageScrollY() - heroTop) / heroHeight);
-      if (progress === lastProgress) return;
+      const scrollY = getPageScrollY();
+      const progress = clamp((scrollY - heroTop) / heroHeight);
+      const revealDistance = Math.max(120, Math.min(200, window.innerHeight * 0.2));
+      const logoProgress = clamp((scrollY - (heroTop + heroHeight)) / revealDistance);
+      if (progress === lastProgress && logoProgress === lastLogoProgress) return;
       lastProgress = progress;
+      lastLogoProgress = logoProgress;
 
       // Write only to the animated sections, without rerendering on each scroll.
       hero.style.setProperty('--hero-scroll', `${progress * heroHeight}px`);
@@ -31,12 +36,10 @@ export function useHeroScroll() {
       const easedFade = fadeProgress * fadeProgress * (3 - 2 * fadeProgress);
       // Deriving opacity from position makes the fade fully reversible.
       hero.style.setProperty('--hero-wordmark-opacity', String(0.88 - 0.82 * easedFade));
-      const mobile = window.innerWidth < 640;
-      const wordingStart = mobile ? 0.78 : 0.65;
-      navbar.style.setProperty('--logo-reveal', String(clamp((progress - wordingStart) / (1 - wordingStart))));
-      navbar.style.setProperty('--surface-reveal', String(clamp((progress - 0.45) / 0.45)));
+      navbar.style.setProperty('--logo-reveal', String(logoProgress));
+      navbar.style.setProperty('--surface-reveal', String(logoProgress));
 
-      const nextVisible = progress > wordingStart;
+      const nextVisible = logoProgress > 0.01;
       if (nextVisible !== visible) {
         visible = nextVisible;
         setLogoVisible(nextVisible);
@@ -51,6 +54,7 @@ export function useHeroScroll() {
       heroTop = bounds.top + getPageScrollY();
       heroHeight = Math.max(1, bounds.height);
       lastProgress = -1;
+      lastLogoProgress = -1;
       scheduleUpdate();
     };
 

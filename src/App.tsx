@@ -1,6 +1,6 @@
 import { PrivacyPage } from './components/PrivacyPage';
 import { NotFoundPage } from './components/NotFoundPage';
-import { localBusiness } from '../shared/public-content';
+import { homeDescription, localBusiness } from '../shared/public-content';
 import { useSite } from './lib/site';
 import { usePageSeo } from './lib/page-seo';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
@@ -16,10 +16,11 @@ import { AboutCTA } from './components/AboutCTA';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { PropertyDetailPage } from './components/PropertyDetailPage';
+import { MobileWhatsApp } from './components/MobileWhatsApp';
 
 function HomePage() {
   const site = useSite();
-  usePageSeo('Ubikka Inmobiliaria | Propiedades en Tucumán', 'Encontrá propiedades en venta y alquiler en Tucumán. Consultá a Ubikka por tu próximo espacio.', localBusiness(site));
+  usePageSeo('Ubikka Inmobiliaria | Propiedades en Tucumán', homeDescription, localBusiness(site));
   const { heroRef, navbarRef, logoVisible } = useHeroScroll();
 
   const handleNavContactClick = () => {
@@ -69,5 +70,6 @@ function RouteEffects() {
 export default function App() {
   return <BrowserRouter><RouteEffects /><div className="min-h-screen bg-[#3A3936] text-[#E6E0D6] font-[Poppins] selection:bg-[#E6E0D6] selection:text-[#3A3936]">
     <Routes><Route path="/" element={<HomePage />} /><Route path="/propiedades" element={<PropertiesPage />} /><Route path="/propiedades/:slug" element={<LivePropertyPage />} /><Route path="/privacidad" element={<PrivacyPage />} /><Route path="*" element={<NotFoundPage />} /></Routes>
+    <MobileWhatsApp />
   </div></BrowserRouter>;
 }

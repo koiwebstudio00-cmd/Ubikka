@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Phone, Mail, MessageSquare, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useSite } from '../lib/site';
 import { Property } from '../data/properties';
+import { brandContact } from '../../shared/public-content';
 
 interface ContactProps {
   selectedProperty?: Property | null;
@@ -85,10 +86,10 @@ export const Contact: React.FC<ContactProps> = ({ selectedProperty }) => {
             </p>
 
             <div className="space-y-6 pt-2 text-sm">
-              {site?.telefono && <p className="flex items-center gap-3"><Phone size={18} /><SiteLink href={`tel:${site.telefono.replace(/[^+0-9]/g, '')}`}>{site.telefono}</SiteLink></p>}
+              <p className="flex items-center gap-3"><Phone size={18} /><SiteLink className="font-bold" href={brandContact.phoneHref}>{brandContact.phoneDisplay}</SiteLink></p>
               {site?.email && <p className="flex items-center gap-3"><Mail size={18} /><SiteLink href={`mailto:${site.email}`}>{site.email}</SiteLink></p>}
-              {site?.telefono && <p className="flex items-center gap-3"><MessageSquare size={18} /><SiteLink href={`https://wa.me/${site.telefono.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</SiteLink></p>}
-              {(site?.direccion || site?.ciudad) && <p className="flex items-center gap-3"><MapPin size={18} />{[site.direccion, site.ciudad].filter(Boolean).join(', ')}</p>}
+              <p className="flex items-center gap-3"><MessageSquare size={18} /><SiteLink href={brandContact.whatsappHref} target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</SiteLink></p>
+              <p className="flex items-start gap-3"><MapPin size={18} className="mt-0.5 shrink-0" /><span>{brandContact.address}<br />{brandContact.city}</span></p>
             </div>
           </div>
 

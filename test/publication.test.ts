@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { pageHtml } from '../server/seo.ts';
+import { brandContact, homeDescription, localBusiness } from '../shared/public-content.ts';
 import seo from '../api/seo.ts';
 import siteHandler from '../api/site.ts';
 import inquiries from '../api/inquiries.ts';
@@ -25,9 +26,19 @@ test('withdrawn listings are 404; preview and missing domain are noindex',async(
  try{const result=await pageHtml(template,'/propiedades/casa',env);assert.equal(result.status,404);assert.ok(!result.html.includes('Hidden'));assert.match(result.html,/noindex/);}finally{globalThis.fetch=original;}
  assert.match((await pageHtml(template,'/',{...env,VERCEL_ENV:'preview'})).html,/noindex/);assert.match((await pageHtml(template,'/',{})).html,/noindex/);
 });
-test('sitemap includes available inventory; robots uses configured domain',async()=>{
+test('sitemap includes available inventory; robots allows the site and protects the API',async()=>{
  const original=globalThis.fetch;globalThis.fetch=async()=>Response.json({data:[{slug:'casa',estado:'disponible'},{slug:'privada',estado:'reservado'}],meta:{total:2}});
- try{const res=response();await seo({method:'GET',url:'/sitemap.xml'} as any,res as any,env);assert.equal(res.statusCode,200);assert.match(res.body,/https:\/\/ubikka.example\/propiedades\/casa/);assert.ok(!res.body.includes('privada'));const robots=response();await seo({method:'GET',url:'/robots.txt'} as any,robots as any,env);assert.match(robots.body,/Sitemap: https:\/\/ubikka.example\/sitemap.xml/);}finally{globalThis.fetch=original;}
+ try{const res=response();await seo({method:'GET',url:'/sitemap.xml'} as any,res as any,env);assert.equal(res.statusCode,200);assert.match(res.body,/https:\/\/ubikka.example\/propiedades\/casa/);assert.ok(!res.body.includes('privada'));const robots=response();await seo({method:'GET',url:'/robots.txt'} as any,robots as any,env);assert.match(robots.body,/Allow: \/\n/);assert.match(robots.body,/Disallow: \/api\//);assert.match(robots.body,/Sitemap: https:\/\/ubikka.example\/sitemap.xml/);}finally{globalThis.fetch=original;}
+});
+
+test('home uses the approved brand description and verified contact fallback', async () => {
+ const home = await pageHtml(template, '/', env);
+ assert.ok(home.html.includes(homeDescription));
+ assert.match(home.html, /og:image.*ubikka-social-share\.jpg/);
+ assert.match(home.html, /og:image:width.*1200/);
+ const business = localBusiness(null, 'https://ubikka.example');
+ assert.equal(business.telephone, brandContact.phoneDisplay);
+ assert.equal(business.address.streetAddress, brandContact.address);
 });
 
 test('privacy has unique metadata and unknown routes return branded 404', async () => {
