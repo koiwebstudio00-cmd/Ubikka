@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pageHtml } from '../server/seo.ts';
+import { pageHtml, siteOrigin } from '../server/seo.ts';
 import { brandContact, homeDescription, localBusiness } from '../shared/public-content.ts';
 import seo from '../api/seo.ts';
 import siteHandler from '../api/site.ts';
@@ -39,6 +39,15 @@ test('home uses the approved brand description and verified contact fallback', a
  const business = localBusiness(null, 'https://ubikka.example');
  assert.equal(business.telephone, brandContact.phoneDisplay);
  assert.equal(business.address.streetAddress, brandContact.address);
+});
+
+test('production metadata falls back to the Vercel project domain', async () => {
+ assert.equal(siteOrigin({ VERCEL_PROJECT_PRODUCTION_URL: 'ubikka.vercel.app' }), 'https://ubikka.vercel.app');
+ assert.equal(siteOrigin({ VERCEL_ENV: 'production' }), 'https://ubikka.vercel.app');
+ const home = await pageHtml(template, '/', { VERCEL_ENV: 'production' });
+ assert.match(home.html, /og:image[^>]+https:\/\/ubikka\.vercel\.app\/images\/ubikka-social-share\.jpg/);
+ assert.match(home.html, /canonical[^>]+https:\/\/ubikka\.vercel\.app\//);
+ assert.match(home.html, /content="index,follow"/);
 });
 
 test('privacy has unique metadata and unknown routes return branded 404', async () => {

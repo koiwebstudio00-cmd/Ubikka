@@ -2,7 +2,20 @@ import { homeDescription, localBusiness, propertyMetadata, privacyTitle, privacy
 import { lokation } from './lokation.js';
 export const escape = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!));
 export function siteOrigin(env: NodeJS.ProcessEnv) {
-  try { const url = new URL(env.SITE_URL || ''); return url.protocol === 'https:' ? url.origin : ''; } catch { return ''; }
+  const candidates = [
+    env.SITE_URL,
+    env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : '',
+    env.VERCEL_ENV === 'production' ? 'https://ubikka.vercel.app' : '',
+  ];
+  for (const candidate of candidates) {
+    try {
+      const url = new URL(candidate || '');
+      if (url.protocol === 'https:') return url.origin;
+    } catch {
+      // Try the next trusted production origin.
+    }
+  }
+  return '';
 }
 export async function inventory(env: NodeJS.ProcessEnv) {
   const data: any[] = [];
