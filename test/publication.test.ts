@@ -34,7 +34,7 @@ test('sitemap includes available inventory; robots allows the site and protects 
 test('home uses the approved brand description and verified contact fallback', async () => {
  const home = await pageHtml(template, '/', env);
  assert.ok(home.html.includes(homeDescription));
- assert.match(home.html, /og:image.*ubikka-social-share\.jpg/);
+ assert.match(home.html, /og:image.*ubikka-social-share-v2\.jpg/);
  assert.match(home.html, /og:image:width.*1200/);
  const business = localBusiness(null, 'https://ubikka.example');
  assert.equal(business.telephone, brandContact.phoneDisplay);
@@ -45,7 +45,7 @@ test('production metadata falls back to the Vercel project domain', async () => 
  assert.equal(siteOrigin({ VERCEL_PROJECT_PRODUCTION_URL: 'ubikka.vercel.app' }), 'https://ubikka.vercel.app');
  assert.equal(siteOrigin({ VERCEL_ENV: 'production' }), 'https://ubikka.vercel.app');
  const home = await pageHtml(template, '/', { VERCEL_ENV: 'production' });
- assert.match(home.html, /og:image[^>]+https:\/\/ubikka\.vercel\.app\/images\/ubikka-social-share\.jpg/);
+ assert.match(home.html, /og:image[^>]+https:\/\/ubikka\.vercel\.app\/images\/ubikka-social-share-v2\.jpg/);
  assert.match(home.html, /canonical[^>]+https:\/\/ubikka\.vercel\.app\//);
  assert.match(home.html, /content="index,follow"/);
 });
@@ -70,6 +70,7 @@ test('home and catalog render without requesting or waiting for the API', async 
   }
   assert.equal(calls, 0);
   const home = await pageHtml(template, '/', env);
+  assert.match(home.html, /San Miguel de Tucumán y Yerba Buena/);
   assert.match(home.html, /RealEstateAgent/);
  } finally { globalThis.fetch = original; }
 });

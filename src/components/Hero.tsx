@@ -57,7 +57,7 @@ export const Hero: React.FC<HeroProps> = ({ sectionRef }) => {
         <div className="hero-rule" aria-hidden="true" />
         <p className="hero-description">
           Alquileres · Administración · Ventas<br className="hidden sm:block" />
-          {' '}en <strong>San Miguel de Tucumán.</strong>
+          {' '}en <strong>San Miguel de Tucumán y Yerba Buena.</strong>
         </p>
         <SiteLink href="#propiedades" className="hero-cta group">
           <span>Ver propiedades</span>

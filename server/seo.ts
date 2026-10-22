@@ -34,8 +34,8 @@ export async function pageHtml(template: string, pathname: string, env: NodeJS.P
   const origin = siteOrigin(env);
   let title = 'Ubikka Inmobiliaria | Propiedades en Tucumán';
   let description = homeDescription;
-  let content = '<h1>Ubikka Inmobiliaria</h1><p>Entender antes de decidir. Alquileres, administración y ventas en San Miguel de Tucumán.</p><a href="/propiedades">Ver propiedades</a>';
-  let image = origin ? `${origin}/images/ubikka-social-share.jpg` : '';
+  let content = '<h1>Ubikka Inmobiliaria</h1><p>Entender antes de decidir. Alquileres, administración y ventas en San Miguel de Tucumán y Yerba Buena.</p><a href="/propiedades">Ver propiedades</a>';
+  let image = origin ? `${origin}/images/ubikka-social-share-v2.jpg` : '';
   let bootstrap: unknown;
   let status = 200;
   let canonicalPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');

@@ -1,6 +1,6 @@
 export const privacyTitle = 'Privacidad y datos personales | Ubikka';
 export const privacyDescription = 'Conocé qué datos recibe Ubikka al consultar por una propiedad, para qué se utilizan y cómo solicitar su actualización o eliminación.';
-export const homeDescription = 'En Ubikka te explicamos precio, papeles y condiciones de cada operación para que entiendas antes de decidir. Alquileres, administración y ventas en San Miguel de Tucumán.';
+export const homeDescription = 'En Ubikka te explicamos precio, papeles y condiciones de cada operación para que entiendas antes de decidir. Alquileres, administración y ventas en San Miguel de Tucumán y Yerba Buena.';
 export const brandContact = {
   phoneDisplay: '381 202 0364',
   phoneHref: 'tel:+5493812020364',
